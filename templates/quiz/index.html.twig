@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+    <script src="{{ asset('js/quiz.js') }}" defer></script>
+{% endblock %}
+
+{% block title %}Quiz! ({{ questionIndex+1 }} of {{ totalQuestions }}){% endblock %}
+
+{% block body %}
+    <form id="quiz-wrapper" method="POST" action="{{ path('app_quiz_submit') }}">
+        <img id="quiz-image" src="https://www.vector-eps.com/wp-content/gallery/audio-waves-and-signals-vectors/audio-waves-and-signals-design1.jpg"/>
+        <div id="question-box">
+            <p class="question-text">{{ question.question }} </p>
+        </div>
+        <progress id="quiz-progress" value="{{ questionIndex+1 }}" max="{{ totalQuestions }}"></progress>
+        <label class="answer-label" for="ans1">
+            <input type="radio" name="answer" value="1" id="ans1" class="question-text"/>
+            <div class="answer-box">{{ question.answer1 }}</div>
+        </label>
+        <label class="answer-label" for="ans2">
+            <input type="radio" name="answer" value="2" id="ans2" class="question-text"/>
+            <div class="answer-box">{{ question.answer2 }}</div>
+        </label>
+        <div id="timer">15</div>
+        <label class="answer-label" for="ans3">
+            <input type="radio" name="answer" value="3" id="ans3" class="question-text"/>
+            <div class="answer-box">{{ question.answer3 }}</div>
+        </label>
+        <label class="answer-label" for="ans4">
+            <input type="radio" name="answer" value="4" id="ans4" class="question-text"/>
+            <div class="answer-box">{{ question.answer4 }}</div>
+        </label>
+        {# <button type="submit">Submit</button> #}
+    </div>
+{% endblock %}

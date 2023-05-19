@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+{% endblock %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block body %}
+    <div class="results-container">
+    <h2>Quiz Overall</h2>
+    <span>Your score: {{ score }} / {{ totalQuestions }} </span>
+    <div class="results-title-seperator"></div>
+    {% for question in questions %}
+        <div class="result-box">
+            <h3>
+                {{ question.question }} 
+                {% if question.correctAnswer == answers[loop.index0] %}
+                    <span class="results-correct" style="font-size:1.5em;">&#x2714;</span>
+                {% else %}
+                    &#x274C;
+                {% endif %}
+            </h3>
+
+            <ul>
+                <li
+                    {% if question.correctAnswer == 1 %}
+                        class="results-correct"
+                    {% elseif answers[loop.index0] == 1 %}
+                        class="results-mistake"
+                    {% endif %}
+                >{{ question.answer1 }}</li>
+
+                <li
+                    {% if question.correctAnswer == 2 %}
+                        class="results-correct"
+                    {% elseif answers[loop.index0] == 2 %}
+                        class="results-mistake"
+                    {% endif %}
+                >{{ question.answer2 }}</li>
+
+                <li
+                    {% if question.correctAnswer == 3 %}
+                        class="results-correct"
+                    {% elseif answers[loop.index0] == 3 %}
+                        class="results-mistake"
+                    {% endif %}
+                >{{ question.answer3 }}</li>
+
+                <li
+                    {% if question.correctAnswer == 4 %}
+                        class="results-correct"
+                    {% elseif answers[loop.index0] == 4 %}
+                        class="results-mistake"
+                    {% endif %}
+                >{{ question.answer4 }}</li>
+            </ul>
+        </div>
+    {% endfor %}
+    <a class="link-button" href="{{ path('app_new_quiz') }}">New quiz!</a>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+{% endblock %}
+
+{% block title %}Question{% endblock %}
+
+{% block body %}
+    <div id="quiz-wrapper">
+        <img id="quiz-image" src="https://www.vector-eps.com/wp-content/gallery/audio-waves-and-signals-vectors/audio-waves-and-signals-design1.jpg"/>
+        <div id="question-box">
+            <p class="question-text">{{ question.question }} </p>
+        </div>
+        <progress id="quiz-progress" value="1" max="1"></progress>
+        <div class="answer-box">
+            <p class="question-text">{{ question.answer1 }} </p>
+        </div>
+        <div class="answer-box">
+            <p class="question-text">{{ question.answer2 }} </p>
+        </div>
+        <div id="timer">15</div>
+        <div class="answer-box">
+            <p class="question-text">{{ question.answer3 }} </p>
+        </div>
+        <div class="answer-box">
+            <p class="question-text">{{ question.answer4 }} </p>
+        </div>
+    </div>
+{% endblock %}
+
