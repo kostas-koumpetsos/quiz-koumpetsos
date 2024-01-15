@@ -35,7 +35,6 @@
 
 #quiz-progress {
 	grid-area: p;
-	width: 100%;
 }
 
 #timer {
@@ -119,7 +118,7 @@ input[type=radio]:checked + div { /* DIV STYLES */
 	border-radius: 5px;
 }
 
-a.link-button {
+.link-button {
     -webkit-appearance: button;
     -moz-appearance: button;
     appearance: button;
@@ -138,7 +137,7 @@ a.link-button {
 	margin: 0.5em 0;
 }
 
-a.link-button:hover {
+.link-button:hover {
 	background-color: #aaa;
 }
 

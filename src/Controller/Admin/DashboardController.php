@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 // link Question entities
 use App\Entity\Question;
+use App\Entity\PlotQuestion;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -50,5 +51,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
          yield MenuItem::linkToCrud('Questions', 'fas fa-list', Question::class);
+         yield MenuItem::linkToCrud('Plots', 'fas fa-list', PlotQuestion::class);
     }
 }

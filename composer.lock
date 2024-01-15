@@ -4,8 +4,61 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5951a61bda3c409a2e703a485b0c687",
+    "content-hash": "daad6e314823af8475c0e51610001136",
     "packages": [
+        {
+            "name": "chriskonnertz/string-calc",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chriskonnertz/string-calc.git",
+                "reference": "ab730666c321e42c4392856fc21eabdcf0719ae1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chriskonnertz/string-calc/zipball/ab730666c321e42c4392856fc21eabdcf0719ae1",
+                "reference": "ab730666c321e42c4392856fc21eabdcf0719ae1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ChrisKonnertz\\StringCalc": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Konnertz"
+                }
+            ],
+            "description": "StringCalc is a PHP calculator library for mathematical terms (expressions) passed as strings.",
+            "keywords": [
+                "calculation",
+                "expression",
+                "math",
+                "parser",
+                "string calc",
+                "string-calc",
+                "stringcalc",
+                "term"
+            ],
+            "support": {
+                "issues": "https://github.com/chriskonnertz/string-calc/issues",
+                "source": "https://github.com/chriskonnertz/string-calc/tree/v2.0.0"
+            },
+            "time": "2022-05-13T17:29:03+00:00"
+        },
         {
             "name": "doctrine/annotations",
             "version": "2.0.1",

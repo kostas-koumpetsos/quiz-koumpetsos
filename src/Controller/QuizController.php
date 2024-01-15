@@ -22,7 +22,8 @@ class QuizController extends AbstractController
         if (!$request->getSession()->has('quiz')) {
             // Generate a new quiz with 10 random questions
             $total_question_number = $questionRepository->count([]);
-            $question_index_pool = range(1, $total_question_number);
+            $starting_id = 2;
+            $question_index_pool = range($starting_id, $starting_id + $total_question_number-1);
             $random_idx = array_rand($question_index_pool, 10);
 
             $question_ids = array();

@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/plotter.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        // support for asciimath
+        MathJax = {
+          loader: {load: ['input/asciimath', 'output/chtml', 'ui/menu']},
+        };
+    </script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ asset('js/plotter.js') }}" defer></script>
+    <script>
+        const solution = {{ solution }};
+        const domain = {{ domain }}; 
+        const minY = {{ minY }} ;
+        const maxY = {{ maxY }} ;
+        const totalQuestions = {{ totalQuestions }};
+        const questionIndex = {{ questionIndex }};
+    </script>
+{% endblock %}
+
+{% block title %}Plotter!{% endblock %}
+
+{% block body %}
+    <div class="plotter-container">
+        <p class="question-text">Plot ` {{ question.functionText }} `</p>
+        <progress id="quiz-progress" value="{{ questionIndex+1}}" max="{{ totalQuestions }}"></progress>
+        <div class="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+        <button class="link-button" id="sumbit-chart-button">Sumbit</button>
+        <a style="visibility: hidden;" class="link-button" id="next-button" href="{{ path('app_plotter_next') }}">
+            {% if questionIndex+1 != totalQuestions %}
+                Next Plot
+            {% else %}
+                Go to Overall
+            {% endif %}
+        </a>
+    </div>
+
+    <script>
+        var vec_x = [];
+        var vec_y = [];
+        // const dataPoints = 17;
+        const dataPoints = 33;
+        
+        for(const x of domain) {
+            // vec_x.push(x);
+            vec_y.push(x);
+
+        }
+        
+        vec_x = [...domain];
+
+        // Sample data for the bar chart
+        var data = {
+            // labels: ["Category 1", "Category 2", "Category 3", "Category 4"],
+            labels: vec_x,
+            datasets: [{
+                label: "Your Plot",
+                backgroundColor: "rgba(75,192,192,0.2)",
+                borderColor: "rgba(75,192,192,1)",
+                borderWidth: 1,
+                data: [...vec_y],
+                animation: false
+            },{
+
+                label: "Solution",
+                hidden: true,
+                backgroundColor: "rgba(250,25,25,0.2)",
+                borderColor: "rgba(250,25,25,1)",
+                borderWidth: 1,
+                data: [...solution],
+            }] 
+        };
+
+        const borderOpts = {
+            color: 'black',
+            width: 2,
+        }
+
+        var options = {
+            responsive: true,
+            // tooltips: {enabled: false},
+            // showTooltips: false,
+            hover: {mode: null},
+            events : [],
+            scales: {
+                x: {
+                    // beginAtZero: true, 
+                    position: 'center',
+                    border: borderOpts,
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            return vec_x[index].toFixed(2);
+                        }
+                    }
+                },
+                y: {
+                    // beginAtZero: true,
+                    position: 'center',
+                    border: borderOpts,
+                    min: minY,
+                    max: maxY,
+                    ticks: {
+                        callback: function(value, index, ticks) {
+                            return value.toFixed(2);
+                        }
+                    }
+                },
+            },
+            //animation: false,
+            tension: 0.4
+        };
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line', //'bar',
+            data: data,
+            options: options
+        });
+
+        // Add a click event listener to the canvas
+        document.getElementById('myChart').addEventListener('mousemove', function (event) {
+            // Get the y position of the click relative to the canvas
+            if(event.buttons !== 1) return;
+
+            let x = myChart.scales['x'].getValueForPixel(event.offsetX);
+            let y = myChart.scales['y'].getValueForPixel(event.offsetY);
+
+            // var updateIndex = Math.floor(mouseX / canvasWidth * dataset.data.length);
+            if(x < 0 || x >= dataPoints) {
+                // console.log('Out of bounds');
+                return;
+            }
+
+            // Update the data set based on the mouseY position
+            var dataset = myChart.data.datasets[0];
+
+            dataset.data[x] = Math.max(Math.min(y, maxY), minY);
+
+            // Update the chart
+            myChart.update();
+        });
+
+        function roundFloatArray(arr, decimals=3) {
+            return arr.map(v => parseFloat(v.toFixed(decimals)));
+        }
+
+        document.addEventListener('keyup', event => {
+          if (event.code === 'Space') {
+              const plot_vals = roundFloatArray(myChart.data.datasets[0].data);
+              const orig_vals = roundFloatArray(vec_y);
+              
+              console.log(JSON.stringify([plot_vals, orig_vals]));
+          }
+        })
+
+        const sumbitButton = document.querySelector("#sumbit-chart-button");
+        sumbitButton.addEventListener('click', e => {
+            const data = {
+                // plot_id: 'abc',
+                user_answer: myChart.data.datasets[0].data
+            };
+
+            fetch("submit", {
+                credentials: "same-origin",
+                mode: "same-origin",
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                myChart.show(1);
+                myChart.update();
+
+                // make the button move to next plot
+                const next_a = document.querySelector('#next-button');
+                next_a.style.visibility = 'visible';
+                sumbitButton.remove();
+            });
+
+        });
+    </script>
+
+{% endblock %}

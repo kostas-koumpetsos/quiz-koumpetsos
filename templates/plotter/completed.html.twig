@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        // support for asciimath
+        MathJax = {
+          loader: {load: ['input/asciimath', 'output/chtml', 'ui/menu']},
+        };
+    </script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+{% endblock %}
+
+{% block title %}Plotter Results{% endblock %}
+
+{% block body %}
+    <div class="results-container">
+    <h2>Quiz Overall</h2>
+    <span>Your score: {{ score }} / {{ totalQuestions }} </span>
+    <div class="results-title-seperator"></div>
+    {% for question in questions %}
+        <div class="result-box">
+            <h3>
+                ` {{ question.functionText }} `
+                {% if results[loop.index0].success %}
+                    <span class="results-correct" style="font-size:1.5em;">&#x2714;</span>
+                {% else %}
+                    &#x274C;
+                {% endif %}
+            </h3>
+            <h5>Normalized Cross Correlation Similarity: {{ results[loop.index0].corr_similarity }}</h5>
+            <h5>Normalized Mean Square Error: {{ results[loop.index0].normalized_mse }}</h5>
+
+        </div>
+    {% endfor %}
+    <a class="link-button" href="{{ path('app_new_plotter') }}">New plotter!</a>
+    <a class="link-button" href="{{ path('app_index') }}">Home!</a>
+    </div>
+{% endblock %}
+

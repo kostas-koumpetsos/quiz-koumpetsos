@@ -1,0 +1,13 @@
+.plotter-container {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	width: 70%;
+	align-items: center;
+	justify-content: center;
+}
+
+.chart-container {
+	width: 100%;
+}
+
